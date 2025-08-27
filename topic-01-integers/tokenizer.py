@@ -39,6 +39,7 @@ def tokenize(characters):
 
 def test_simple_tokens():
     print("test simple tokens...")
+    t = tokenize("+")
     assert tokenize("+") == [
         {"tag":"+", "position":0},
         {"tag":None, "position":1}
@@ -48,7 +49,13 @@ def test_simple_tokens():
         {"tag":None, "position":1}
     ]
 
+def test_simple_expressions():
+    print("test simple expressions...")
+    t = tokenize("2+3")
+    assert t == [{'tag': 'number', 'position': 0, 'value': 2}, {'tag': '+', 'position': 1}, {'tag': 'number', 'position': 2, 'value': 3}, {'tag': None, 'position': 3}]
+
 if __name__ == "__main__":
     print("testing tokenizer...")
     test_simple_tokens()
+    test_simple_expressions()
     print("done.")
