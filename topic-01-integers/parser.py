@@ -6,11 +6,29 @@ parser.py -- implement parser for simple expressions
 Accept a string of tokens, return an AST expressed as stack of dictionaries
 """
 
-"""
-    factor = <number> | <identifier> | "(" expression ")"
+ebnf = """
+    factor = <number> | "(" expression ")"
     term = factor { "*"|"/" factor }
     expression = term { "+"|"-" term }
     statement = <print> expression | expression
+    program = expression
+"""
+
+bnf = """
+    factor = <number>
+    factor = <identifier>
+    factor = "(" expression ")"
+
+    term = factor { "*"|"/" factor }
+    term = term * factor
+    term = term / factor
+
+    expression = term 
+    expression = expression + term
+    expression = expression - term
+
+    statement = <print> expression
+    statement = expression
 """
 
 def parse_factor(tokens):
@@ -31,7 +49,7 @@ def parse_factor(tokens):
 
 def test_parse_factor():
     """
-    factor = <number> | <identifier> | "(" expression ")"
+    factor = <number> | "(" expression ")"
     """
     print("testing parse_factor()")
     for s in ["1","22","333"]:
@@ -140,12 +158,28 @@ def test_parse_statement():
 
 
 def parse(tokens):
-    ast, tokens = parse_statement(tokens)
+    """
+        program = expression
+    """
+    ast, _ = parse_statement(tokens)
     return ast
+
+def test_parse():
+    """
+        program = expression
+    """
+    print("testing parse()")
+    tokens = tokenize("1+(2+3)*4")
+    ast1, _ = parse_statement(tokens)
+    ast2 = parse(tokens)
+    assert ast1 == ast2, "parse() is not evaluating via parse_expression()"
+
+
 
 if __name__ == "__main__":
     test_parse_factor()
     test_parse_term()
     test_parse_expression()
     test_parse_statement()
+    test_parse()
     print("done.")
