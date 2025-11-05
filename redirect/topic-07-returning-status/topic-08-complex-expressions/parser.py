@@ -14,7 +14,6 @@ grammar = """
     simple_expression = <identifier> | <boolean> | <number> | <string> | list | "-" simple_expression | "!" simple_expression | ( "(" expression ")" )
     list = "[" expression { "," expression } "]"
     object = "{" [ expression ":" expression { "," expression ":" expression } ] "}"
-
     complex_expression = simple_expression
     arithmetic_factor = complex_expression
     arithmetic_term = arithmetic_factor { "*"|"/" arithmetic_factor }
